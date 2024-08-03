@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.YunshareFormTemplateMapper">
+     <resultMap type="com.yunshare.modules.entity.YunshareFormTemplate" id="yunshareFormMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+         <result property="corpId" column="corp_id" jdbcType="BIGINT"/>
+         <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+         <result property="createDept" column="create_dept" jdbcType="INTEGER"/>
+        <result property="templateStatus" column="template_status" jdbcType="INTEGER"/>
+        <result property="templateType" column="template_type" jdbcType="VARCHAR"/>
+        <result property="templateTitle" column="template_title" jdbcType="VARCHAR"/>
+        <result property="templateHtml" column="template_html" jdbcType="VARCHAR"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="pageList" resultMap="yunshareFormMap">
+        select id,corp_id,create_user,update_user,create_dept,template_status,template_type,template_title,template_html,is_deleted,
+               create_time,update_time
+        from yunshare_form_template
+        where is_deleted = 0
+        <if test="input.templateStatus != null">
+           and template_status = #{input.templateStatus}
+        </if>
+        <if test="input.corpId != null">
+            and corp_id = #{input.corpId}
+        </if>
+        <if test="input.templateType != null">
+            and form_type = #{input.templateType}
+        </if>
+        <if test="input.keyword != null and input.keyword != ''">
+            and form_title like concat('%',#{input.keyword},'%')
+        </if>
+    </select>
+
+
+
+
+</mapper>
+

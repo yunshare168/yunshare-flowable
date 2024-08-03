@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.ActRuTaskMapper">
+    <resultMap type="com.yunshare.modules.entity.ActRuTask" id="ActRuTaskMap">
+        <result property="id" column="ID_" jdbcType="VARCHAR"/>
+        <result property="rev" column="REV_" jdbcType="INTEGER"/>
+        <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR"/>
+        <result property="procInstId" column="PROC_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="procDefId" column="PROC_DEF_ID_" jdbcType="VARCHAR"/>
+        <result property="taskDefId" column="TASK_DEF_ID_" jdbcType="VARCHAR"/>
+        <result property="scopeId" column="SCOPE_ID_" jdbcType="VARCHAR"/>
+        <result property="subScopeId" column="SUB_SCOPE_ID_" jdbcType="VARCHAR"/>
+        <result property="scopeType" column="SCOPE_TYPE_" jdbcType="VARCHAR"/>
+        <result property="scopeDefinitionId" column="SCOPE_DEFINITION_ID_" jdbcType="VARCHAR"/>
+        <result property="propagatedStageInstId" column="PROPAGATED_STAGE_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="name" column="NAME_" jdbcType="VARCHAR"/>
+        <result property="parentTaskId" column="PARENT_TASK_ID_" jdbcType="VARCHAR"/>
+        <result property="description" column="DESCRIPTION_" jdbcType="VARCHAR"/>
+        <result property="taskDefKey" column="TASK_DEF_KEY_" jdbcType="VARCHAR"/>
+        <result property="owner" column="OWNER_" jdbcType="VARCHAR"/>
+        <result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR"/>
+        <result property="delegation" column="DELEGATION_" jdbcType="VARCHAR"/>
+        <result property="priority" column="PRIORITY_" jdbcType="INTEGER"/>
+        <result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="dueDate" column="DUE_DATE_" jdbcType="TIMESTAMP"/>
+        <result property="category" column="CATEGORY_" jdbcType="VARCHAR"/>
+        <result property="suspensionState" column="SUSPENSION_STATE_" jdbcType="INTEGER"/>
+        <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR"/>
+        <result property="formKey" column="FORM_KEY_" jdbcType="VARCHAR"/>
+        <result property="claimTime" column="CLAIM_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="isCountEnabled" column="IS_COUNT_ENABLED_" jdbcType="INTEGER"/>
+        <result property="varCount" column="VAR_COUNT_" jdbcType="INTEGER"/>
+        <result property="idLinkCount" column="ID_LINK_COUNT_" jdbcType="INTEGER"/>
+        <result property="subTaskCount" column="SUB_TASK_COUNT_" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="todoTotalCount" resultType="java.lang.Long">
+        SELECT count(*) from (SELECT  ID_ from ACT_RU_TASK  where TENANT_ID_ = #{cropId} GROUP BY  PROC_INST_ID_) as b
+    </select>
+</mapper>
+

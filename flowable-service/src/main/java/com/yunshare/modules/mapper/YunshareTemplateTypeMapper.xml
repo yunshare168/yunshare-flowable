@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.YunshareTemplateTypeMapper">
+     <resultMap type="com.yunshare.modules.entity.YunshareTemplateType" id="yunshareTemplateTypeMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createDept" column="create_dept" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="page" resultType="com.yunshare.modules.vo.YunshareTemplateTypeVO">
+        SELECT id, title, sort, create_time, create_user
+        FROM yunshare_template_type
+        WHERE is_deleted = 0
+        <if test="input.title != null and input.title != ''">
+            AND title like concat(concat('%', #{input.title}), '%')
+        </if>
+        <if test="input.startTime != null and input.startTime != ''">
+            AND DATE_FORMAT(create_time,'%Y-%m-%d') <![CDATA[>=]]> #{input.startTime}
+        </if>
+        <if test="input.endTime != null and input.endTime != ''">
+            AND DATE_FORMAT(create_time,'%Y-%m-%d') <![CDATA[<=]]> #{input.endTime}
+        </if>
+        ORDER BY sort ASC, id DESC
+    </select>
+    <select id="select" resultType="com.yunshare.modules.vo.YunshareTemplateTypeShortVO">
+        SELECT id, title
+        FROM yunshare_template_type
+        WHERE is_deleted = 0
+        ORDER BY sort ASC, id DESC
+    </select>
+</mapper>
+

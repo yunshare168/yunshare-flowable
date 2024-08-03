@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:映射的接口的全名 -->
+<mapper namespace="com.yunshare.modules.mapper.YunshareFormDefinitionMapper">
+    <resultMap id="yunshareDefFormTemLinkMap" type="com.yunshare.modules.entity.YunshareFormDefinition">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="flowTemplateId" column="flow_template_id" jdbcType="BIGINT"/>
+        <result property="deploymentId" column="deployment_id" jdbcType="VARCHAR"/>
+        <result property="processDefinitionId" column="process_definition_id" jdbcType="VARCHAR"/>
+        <result property="processDefinitionKey" column="process_definition_key" jdbcType="VARCHAR"/>
+        <result property="formType" column="form_type" jdbcType="VARCHAR"/>
+        <result property="formTitle" column="form_title" jdbcType="VARCHAR"/>
+        <result property="formJson" column="form_html" jdbcType="VARCHAR"/>
+        <result property="isOpenComment" column="is_open_comment" jdbcType="VARCHAR"/>
+        <result property="isOpenEvaluate" column="is_open_evaluate" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.FormHandleMapper">
+    <resultMap type="com.yunshare.modules.dto.data.FormDataDTO" id="FormDataDTOMap">
+        <result property="formId" column="form_id" jdbcType="INTEGER"/>
+        <result property="formData" column="form_data" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryFormData" resultType="com.yunshare.modules.dto.data.FormDataDTO">
+        <include refid="sqlData"></include>
+    </select>
+    <select id="queryByFormNo" resultType="com.yunshare.modules.dto.data.FormDataDTO">
+        <include refid="sqlData"></include>
+    </select>
+
+    <sql id="sqlData">
+        SELECT dfd.template_id as formId,
+               dfd.template_data as formData,
+               df.template_title as formTitle,
+               df.template_type as formType,
+               df.template_html as formHtml
+        FROM yunshare_form_data dfd
+                 LEFT JOIN yunshare_form_template df ON dfd.template_id = df.id
+        WHERE dfd.is_deleted = 0
+          AND dfd.template_no = #{templateNo}
+    </sql>
+
+</mapper>
+

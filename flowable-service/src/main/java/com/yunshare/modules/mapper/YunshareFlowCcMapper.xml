@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.YunshareFlowCcMapper">
+
+    <select id="ccPage" resultType="com.yunshare.modules.entity.YunshareFlowCc">
+        SELECT
+        dfc.id,dfc.user_id,dfc.flow_template_id,dfc.process_definition_id,dfc.process_instance_id,dfc.process_definition_key,
+        dft.title process_definition_name, dtt.title category_name, dfc.apply_user_id, dfc.apply_client,dtt.id
+        categoryId
+        FROM yunshare_flow_cc dfc
+        LEFT JOIN yunshare_flow_template dft ON dfc.flow_template_id=dft.id
+        LEFT JOIN yunshare_template_type dtt ON dft.type_id=dtt.id
+        WHERE dfc.user_id=#{userId} and  dfc.corp_id=#{corpId}
+        <if test="param.processDefinitionKey!=null and param.processDefinitionKey!=''">
+            and dfc.process_definition_key = #{param.processDefinitionKey}
+        </if>
+        <if test="param.applyClient!=null and param.applyClient!=''">
+            and dfc.apply_client = #{param.applyClient}
+        </if>
+        <if test="param.applySn!=null and param.applySn!=''">
+            and dfc.apply_sn = #{param.applySn}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND DATE_FORMAT(dfc.create_time,'%Y-%m-%d')   <![CDATA[>=]]> #{startTime}
+        </if>
+        <if test="endTIme != null and endTIme != ''">
+            AND DATE_FORMAT(dfc.create_time,'%Y-%m-%d')   <![CDATA[<=]]> #{endTIme}
+        </if>
+        <choose>
+            <when test="asc">ORDER BY dfc.id asc</when>
+            <otherwise>ORDER BY dfc.id desc</otherwise>
+        </choose>
+
+    </select>
+    <select id="ccCount" resultType="java.lang.Integer">
+        SELECT
+            count(cc.id)
+        FROM
+            yunshare_flow_cc AS cc
+                LEFT JOIN ACT_HI_PROCINST AS procinst ON cc.process_instance_id = procinst.ID_
+        where  corp_id = #{corpId} and user_id = #{userId} and procinst.END_TIME_  is null
+    </select>
+</mapper>

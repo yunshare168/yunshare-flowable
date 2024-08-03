@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.YunshareFormDataMapper">
+    <resultMap type="com.yunshare.modules.entity.YunshareFormData" id="yunshareFormDataMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="corpId" column="corp_id" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="createDept" column="create_dept" jdbcType="INTEGER"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getFormDataById" resultMap="yunshareFormDataMap" parameterType="java.lang.Long">
+        select id,corp_id,create_user,update_user,create_dept,form_id,process_instance_id,form_data,is_deleted,create_time,update_time
+        from yunshare_form_data where id = #{id}
+    </select>
+
+    <select id="detail" resultType="com.yunshare.modules.vo.YunshareFormDataVO">
+        <include refid="sqlData"></include>
+        AND dfd.id = #{id}
+    </select>
+
+    <select id="pageList" resultType="com.yunshare.modules.vo.YunshareFormDataVO">
+        <include refid="sqlData"></include>
+        <if test="entity.corpId !=null and entity.corpId>0">
+            AND dfd.corp_id=#{entity.corpId}
+        </if>
+        <if test="entity.templateId !=null and entity.templateId>0">
+            AND dfd.template_id=#{entity.templateId}
+        </if>
+        <if test="entity.templateType !=null and entity.templateType!='' ">
+            AND df.template_type=#{entity.templateType}
+        </if>
+        <if test="entity.templateNo !=null and entity.templateNo!='' ">
+            AND dfd.template_no=#{entity.templateNo}
+        </if>
+    </select>
+
+    <sql id="sqlData">
+        SELECT dfd.id,
+               dfd.corp_id,
+               dfd.form_id,
+               dfd.form_data,
+               dfd.create_user,
+               dfd.update_user,
+               dfd.create_dept,
+               dfd.create_time,
+               df.template_type,
+               df.template_title,
+               df.template_html
+        FROM yunshare_form_data dfd
+                 LEFT JOIN yunshare_form_template df ON dfd.template_id = df.id
+        WHERE dfd.is_deleted = 0
+    </sql>
+
+
+</mapper>
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunshare.modules.mapper.YunshareFlowTemplateMapper">
+    <resultMap type="com.yunshare.modules.entity.YunshareFlowTemplate" id="yunshareFlowTemplateMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="typeId" column="type_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="corpId" column="corp_id" jdbcType="INTEGER"/>
+        <result property="formTemplateId" column="form_template_id" jdbcType="INTEGER"/>
+        <result property="templateStatus" column="template_status" jdbcType="INTEGER"/>
+        <result property="isOpenComment" column="is_open_comment" jdbcType="INTEGER"/>
+        <result property="isOpenEvaluate" column="is_open_evaluate" jdbcType="INTEGER"/>
+        <result property="bpmnXml" column="bpmn_xml" jdbcType="VARCHAR"/>
+        <result property="nodeConfig" column="node_config" jdbcType="VARCHAR"/>
+        <result property="webhookUrl" column="webhook_url" jdbcType="VARCHAR"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createDept" column="create_dept" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="page" resultType="com.yunshare.modules.vo.YunshareFlowTemplateListVO">
+        SELECT ft.id, ft.title,ft.image, ft.template_status, ft.type_id, ft.create_user, ft.create_time, tt.title as type_title, ft.image, ft.remark
+        FROM yunshare_flow_template ft LEFT JOIN yunshare_template_type tt ON ft.type_id = tt.id
+        WHERE ft.is_deleted = 0 AND ft.corp_id=#{input.corpId} AND ft.from_platform=#{input.fromPlatform}
+        <if test="input.title != null and input.title != ''">
+            AND ft.title like concat(concat('%', #{input.title}), '%')
+        </if>
+        <if test="input.startTime != null and input.startTime != ''">
+            AND DATE_FORMAT(ft.create_time,'%Y-%m-%d')  <![CDATA[>=]]> #{input.startTime}
+        </if>
+        <if test="input.endTime != null and input.endTime != ''">
+            AND DATE_FORMAT(ft.create_time,'%Y-%m-%d')  <![CDATA[<=]]> #{input.endTime}
+        </if>
+        <if test="input.templateStatus != null and input.templateStatus > 0">
+            AND ft.template_status = #{input.templateStatus}
+        </if>
+        <if test="input.typeId != null and input.typeId > 0">
+            AND ft.type_id = #{input.typeId}
+        </if>
+        ORDER BY ft.id DESC
+    </select>
+
+    <select id="flowTemplateList" resultType="com.yunshare.modules.vo.YunshareFlowTemplateListVO">
+        SELECT ft.id, ft.title,ft.image, ft.template_status, ft.type_id, ft.create_user, ft.create_time, tt.title as type_title,  ft.remark
+        FROM yunshare_flow_template ft LEFT JOIN yunshare_template_type tt ON ft.type_id = tt.id
+        WHERE ft.is_deleted = 0 AND ft.corp_id = #{input.corpId} AND ft.from_platform=#{input.fromPlatform}
+        <if test="input.title != null and input.title != ''">
+            AND ft.title like concat(concat('%', #{input.title}), '%')
+        </if>
+        <if test="input.startTime != null and input.startTime != ''">
+            AND DATE_FORMAT(ft.create_time,'%Y-%m-%d')  <![CDATA[>=]]> #{input.startTime}
+        </if>
+        <if test="input.endTime != null and input.endTime != ''">
+            AND DATE_FORMAT(ft.create_time,'%Y-%m-%d')  <![CDATA[<=]]> #{input.endTime}
+        </if>
+        <if test="input.templateStatus != null and input.templateStatus > 0">
+            AND ft.template_status = #{input.templateStatus}
+        </if>
+        <if test="input.typeId != null and input.typeId > 0">
+            AND ft.type_id = #{input.typeId}
+        </if>
+        ORDER BY ft.id DESC
+    </select>
+    <!--查询启用的模板-->
+    <select id="list" resultType="com.yunshare.modules.vo.YunshareFlowTemplateVO">
+        select  ft.id, ft.title,ft.image,  ft.type_id,  tt.title as type_title,  ft.remark
+        from yunshare_flow_template ft LEFT JOIN yunshare_template_type tt ON ft.type_id = tt.id
+        where  ft.is_deleted = 0 and  ft.template_status = 1 and ft.corp_id = #{corpId} and ft.from_platform = #{fromPlatform}
+        <if test="title != null and title != ''">
+            AND ft.title like concat(concat('%', #{title}), '%')
+        </if>
+        ORDER BY ft.id DESC
+    </select>
+</mapper>
+

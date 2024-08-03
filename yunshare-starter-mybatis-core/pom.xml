@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yunshare</groupId>
+        <artifactId>yunshare-flowable</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <groupId>com.yunshare.core.mp</groupId>
+    <artifactId>yunshare-starter-mybatis-core</artifactId>
+    <packaging>jar</packaging>
+
+    <name>yunshare-starter-mybatis-core</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsqlparser</artifactId>
+                    <groupId>com.github.jsqlparser</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <artifactId>jsqlparser</artifactId>
+            <groupId>com.github.jsqlparser</groupId>
+            <version>4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yunshare.core.tool</groupId>
+            <artifactId>yunshare-starter-tool</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,119 @@
+server:
+  port: ${SERVICE_PORT:${random.int(10000,12000)}}
+#服务器配置
+spring:
+  application:
+    name: yunshare-bpm-service
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    database: 0
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:123456}
+    lettuce:
+      pool:
+        max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 60000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 5 # 连接池中的最大空闲连接
+        min-idle: 1 # 连接池中的最小空闲连接
+    timeout: 10000 # 连接超时时间（毫秒）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yunshare_bpm_db}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid相关配置
+    druid:
+      #最大活跃数
+      maxActive: 20
+      #初始化数量
+      initialSize: 1
+      #最大连接等待超时时间
+      maxWait: 60000
+      #打开PSCache，并且指定每个连接PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      #通过connectionProperties属性来打开mergeSql功能；慢SQL记录
+      #connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      #配置监控统计拦截的filters，去掉后监控界面sql将无法统计,'wall'用于防火墙 , 通过http://localhost:8081/druid/index.html 访问druid管理界面
+      # 'wall' 和 flyway  冲突无法执行sql脚本，关闭防火墙
+      filters: stat
+
+#flowable配置
+flowable:
+  activity-font-name: \u5B8B\u4F53
+  label-font-name: \u5B8B\u4F53
+  annotation-font-name: \u5B8B\u4F53
+  check-process-definitions: false
+  database-schema-update: ${FLOWABLE_DATABASE_UPDATE:false}
+  idm:
+    enabled: false
+  dmn:
+    enabled: false
+  cmmn:
+    enabled: false
+
+# mybatis-plus配置
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:com/yunshare/*/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.yunshare.**.entity
+  global-config:
+    banner: false
+  configuration:
+    log-impl: ${SHOW_SQL:org.apache.ibatis.logging.stdout.StdOutImpl}
+
+
+# swagger配置
+swagger:
+  enabled: true
+  title: 接口文档
+  base-package: com.yunshare.modules.controller
+  version: V1.0
+  description: 接口文档
+  license: Apache License, Version 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  terms-of-service-url: http://localhost:30001/doc.html
+  contact-name: lzx@yuyuda.com
+  contact-url: http://localhost:30001/doc.html
+  contact-email: lzx@yuyuda.com
+  authorization-key-name: Authorization
+
+#knife4j配置
+knife4j:
+  #启用
+  enable: true
+  #增强配置
+  setting:
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    enableHost: false
+    enableHostText: http://localhost
+    enableRequestCache: true
+    enableFilterMultipartApis: false
+    enableFilterMultipartApiMethodType: POST
+    language: zh-CN
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Copyright © 2022 yunshare All Rights Reserved
+
+
+# 日志配置
+logging:
+  config: classpath:logback.xml
+  io:
+    swagger:
+      models:
+        parameters:
+          AbstractSerializableParameter: error
