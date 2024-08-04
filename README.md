@@ -18,7 +18,7 @@
 
 ### 快速开始
 #### 1. 导入sql文件
-    > 将doc目录下的[yunshare_bpm.sql.zip](doc%2Fyunshare_bpm.sql.zip)文件解压导入到数据库中
+    > 将doc目录下的yunshare_bpm.sql.zip文件解压导入到数据库中
 #### 2. 配置环境变量
     MYSQL_HOST=127.0.0.1;
     MYSQL_PASSWORD=123456;
